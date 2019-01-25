@@ -1,13 +1,19 @@
+body {
+  background-color: #cacfd8;
+
+}
+
 .App {
   text-align: center;
 }
 
 .App-logo {
-  /* animation: App-logo-spin infinite 20s linear;
-  height: 80px; */
-  width: 90px;
+  animation: App-logo-spin infinite 3s ;
+  height: 40px; 
+  width: 40px;
   display: inline-block;
-  margin-right: 50px;
+  margin-right: 25px;
+  margin-left: 25px;
 }
 .displayFlex
 {
@@ -21,10 +27,11 @@
     height: 30px;
 }
 .App-header {
-  background-color: #222;
+  background-color: #43495a;
   height: 50px;
   color: white;
   text-align: left;
+  padding: 10px 0;
 }
 .App-footer{
     height: 50px;
@@ -52,6 +59,12 @@
 {
 
 }
+.renderChart
+{
+  margin: 20px auto;
+  width: 800px;
+  height: 600px;
+}
 pre
 {
   font-size: 10px;
@@ -76,8 +89,9 @@ pre
   float: left;
 }
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  0% { transform: rotate(-21deg); }
+  50% { transform: rotate(21deg); }
+  100% { transform: rotate(-21deg); }
 }
 
 .footer-small-text {

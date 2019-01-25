@@ -26,24 +26,24 @@ const renderChart = (data) => {
   }
 
   return (
-    <Chart className=""
-      width={'800px'}
+    <Chart className="renderChart"
       height={'600px'}
+      margin={'20px auto'}
       chartType="LineChart"
       loader={<div>Loading Chart</div>}
       data={d}
       options={{
         hAxis: {
-          title: 'Date',
+          title: 'Date 🗓',
         },
         vAxis: {
-          title: 'Stars',
+          title: 'Stars ★',
         },
         series: {
           1: { curveType: 'function' },
         },
         height: '100%',
-          title: 'Cumulative stars over days',
+          title: 'Cumulative stars over days 🚀',
         legend: { position: 'none' },
         animation:{
           duration: 1000,
@@ -62,7 +62,7 @@ export const GitHubStars = () => (
       if (error) return <p>Error :</p>;
       return (
         <div>
-          <div>
+          <div className="chart">
             {renderChart(data)}
           </div>
         </div>
