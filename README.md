@@ -1,4 +1,5 @@
-#Stats dashboard for Hasura
+# Stats dashboard for Hasura
+
 
 A dashboard for displaying important stats for Hasura.
 Currently live are github stars for the Hasura GraphQL Engine repo.
@@ -16,5 +17,6 @@ Upcoming:
 - No. of contributions over time
 
 
+----
 
-Powered by Hasura
+Powered by Hasura ❤️
