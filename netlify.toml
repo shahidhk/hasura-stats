@@ -1,0 +1,4 @@
+[build]
+  base    = "dashboard"
+  command = "yarn build"
+  publish = "dashboard/build"
