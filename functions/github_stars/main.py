@@ -5,12 +5,12 @@ GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 GITHUB_ENDPOINT = "https://api.github.com/graphql"
 
 GITHUB_HEADERS = {
-    "Authorization": "bearer " + GITHUB_TOKEN
+    "Authorization": "bearer " + str(GITHUB_TOKEN)
 }
 
 HASURA_ENDPOINT = os.getenv('HASURA_ENDPOINT')
 HASURA_HEADERS = {
-    "X-Hasura-Access-Key": os.getenv('HASURA_ACCESS_KEY')
+    "X-Hasura-Access-Key": str(os.getenv('HASURA_ACCESS_KEY'))
 }
 
 STARGAZERS_QUERY = """
@@ -66,7 +66,7 @@ def get_stargazers(startCursor=None):
 
     res = requests.post(GITHUB_ENDPOINT, json=query, headers=GITHUB_HEADERS)
     if res.status_code != 200:
-        print('failed', res.status_code, res.json())
+        print('failed: {} {}'.format(res.status_code, res.json()))
         return None
     return res.json()["data"]["repository"]["stargazers"]
 
@@ -87,7 +87,7 @@ def save_stargazers(data):
     print('inserting {} objects'.format(len(data)))
     res = requests.post(HASURA_ENDPOINT, json=payload, headers=HASURA_HEADERS)
     if res.status_code != 200:
-        print('failed', res.status_code, res.json())
+        print('failed: {} {}'.format(res.status_code, res.json()))
         return None
     print('{} objects inserted'.format(res.json()["affected_rows"]))
     return
@@ -102,7 +102,29 @@ def combineNodesAndEdges(nodes, edges):
 
     return data
 
-def main(startCursor=None):
+def getLastCursor():
+    payload = {
+        "type": "select",
+        "args": {
+            "table": "github_stars",
+            "columns": ["cursor"],
+            "order_by": "-id",
+            "limit": 1
+        }
+    }
+    print('getting last cursor')
+    res = requests.post(HASURA_ENDPOINT, json=payload, headers=HASURA_HEADERS)
+    if res.status_code != 200:
+        print('failed: '.format(res.status_code, res.json()))
+        return None
+    data = res.json()
+    if len(data) != 1:
+        print('invalid response: {}'.format(data))
+        return None
+    return data[0]["cursor"]
+
+
+def populate(startCursor=None):
     gazers_raw_response = get_stargazers(startCursor)
     stars = gazers_raw_response["totalCount"]
     pageInfo = gazers_raw_response["pageInfo"]
@@ -113,8 +135,31 @@ def main(startCursor=None):
     save_stargazers(data)
 
     if pageInfo["hasNextPage"]:
-        main(pageInfo["endCursor"])
+        populate(pageInfo["endCursor"])
 
+def main():
+    cursor = getLastCursor()
+    if cursor:
+        populate(cursor)
+    else:
+        print('empty cursor')
 
+def github_stars(request):
+    """HTTP Cloud Function.
+    Args:
+        request (flask.Request): The request object.
+        <http://flask.pocoo.org/docs/1.0/api/#flask.Request>
+    Returns:
+        The response text, or any set of values that can be turned into a
+        Response object using `make_response`
+        <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>.
+    """
+    if request.headers.get('x-github-event') == "watch":
+        cursor = getLastCursor()
+        if cursor:
+            populate(cursor)
+            return 'ok'
+        else:
+            print('empty cursor')
 
-main("Y3Vyc29yOnYyOpO5MjAxOS0wMS0xOVQwNjoxMzo1MCswNTozMADOCSPm_A==")
+    return 'ignored'
