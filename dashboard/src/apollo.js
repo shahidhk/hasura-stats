@@ -9,7 +9,7 @@ import { getMainDefinition } from 'apollo-utilities';
 
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
-export const HASURA_GRAPHQL_ENGINE_HOSTNAME = window.location.host === 'localhost:3000' ? 'localhost:8080' : 'https://GX9rsERjic.bali.hasura-app.io';
+export const HASURA_GRAPHQL_ENGINE_HOSTNAME = window.location.host === 'localhost:3000' ? 'localhost:8080' : 'GX9rsERjic.bali.hasura-app.io';
 
 const scheme = (proto) => {
   return window.location.protocol === 'https:' ? `${proto}s` : proto;
