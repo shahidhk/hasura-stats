@@ -26,18 +26,18 @@ const renderChart = (data) => {
   }
 
   return (
-    <Chart className=""
-      width={'800px'}
+    <Chart className="renderChart"
       height={'600px'}
+      margin={'20px auto'}
       chartType="LineChart"
       loader={<div>Loading Chart</div>}
       data={d}
       options={{
         hAxis: {
-          title: 'Date',
+          title: 'Date 🗓',
         },
         vAxis: {
-          title: 'Stars',
+          title: 'Stars ★',
         },
         series: {
           1: { curveType: 'function' },
