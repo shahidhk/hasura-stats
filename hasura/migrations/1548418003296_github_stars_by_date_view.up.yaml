@@ -1,0 +1,10 @@
+- args:
+    cascade: false
+    sql: |-
+      create view github_stars_by_day as
+      select count(*), starred_at::date as date from github_stars group by date order by date;
+  type: run_sql
+- args:
+    name: github_stars_by_day
+    schema: public
+  type: add_existing_table_or_view

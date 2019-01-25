@@ -8,8 +8,10 @@ GITHUB_HEADERS = {
     "Authorization": "bearer " + GITHUB_TOKEN
 }
 
-HASURA_ENDPOINT = "http://localhost:8080/v1/query"
-HASURA_HEADERS = {}
+HASURA_ENDPOINT = os.getenv('HASURA_ENDPOINT')
+HASURA_HEADERS = {
+    "X-Hasura-Access-Key": os.getenv('HASURA_ACCESS_KEY')
+}
 
 STARGAZERS_QUERY = """
 query getStargazers(
@@ -115,4 +117,4 @@ def main(startCursor=None):
 
 
 
-main()
+main("Y3Vyc29yOnYyOpO5MjAxOS0wMS0xOVQwNjoxMzo1MCswNTozMADOCSPm_A==")

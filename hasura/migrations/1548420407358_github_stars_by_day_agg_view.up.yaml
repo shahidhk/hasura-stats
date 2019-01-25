@@ -1,0 +1,10 @@
+- args:
+    cascade: false
+    sql: |-
+      create view github_stars_by_day_agg as
+      select sum(count(starred_at)) over (order by starred_at::date) as stars, starred_at::date as date from github_stars group by date order by date;
+  type: run_sql
+- args:
+    name: github_stars_by_day_agg
+    schema: public
+  type: add_existing_table_or_view
