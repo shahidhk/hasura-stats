@@ -1,0 +1,3 @@
+- args:
+    sql: DROP TABLE "public"."github_stars"
+  type: run_sql

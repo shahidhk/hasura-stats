@@ -1,0 +1,10 @@
+- args:
+    sql: CREATE TABLE "public"."github_stars"("id" serial NOT NULL, "starred_at" timestamptz
+      NOT NULL, "cursor" text , "login" text NOT NULL, "name" text , "followers" integer
+      NOT NULL, PRIMARY KEY ("id") ); COMMENT ON TABLE "public"."github_stars" IS
+      'Star history from github'
+  type: run_sql
+- args:
+    name: github_stars
+    schema: public
+  type: add_existing_table_or_view
